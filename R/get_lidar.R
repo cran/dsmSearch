@@ -74,7 +74,12 @@ get_lidar <- function(x,
   on.exit(options(timeout = original_timeout), add = TRUE)
   options(timeout=9999)
   # get response using API
-  result <- return_response(bbox[[1]], max_return)
+  tryCatch(
+    result <- return_response(bbox[[1]], max_return),
+    error = function(e) {
+      return(e)
+    }
+  )
   # filter overlapping files
   lastYear <- max(result$startYear)
   result <- result[which(result$startYear == lastYear),]
