@@ -73,6 +73,7 @@ get_lidar <- function(x,
   original_timeout <- getOption('timeout')
   on.exit(options(timeout = original_timeout), add = TRUE)
   options(timeout=9999)
+  result <- 0
   # get response using API
   tryCatch(
     result <- return_response(bbox[[1]], max_return),
@@ -80,6 +81,9 @@ get_lidar <- function(x,
       return(e)
     }
   )
+  if(is.numeric(result)){
+    return('API error. Please try again later.')
+  }
   # filter overlapping files
   lastYear <- max(result$startYear)
   result <- result[which(result$startYear == lastYear),]

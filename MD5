@@ -1,7 +1,7 @@
-7d95b230bbf04de7fca368325aceb8b2 *DESCRIPTION
+9dc135fd86a8b985a58dd8762e99c540 *DESCRIPTION
 7a87b77678a10b409254bdbc1d091fd3 *NAMESPACE
 d7f5f89367ad40da84360e8f834742e5 *R/get_dsm_30.R
-a5162ea28b6c0f1d61311bfce0e72035 *R/get_lidar.R
+e99ae47cb4a28a482aa36d6c0cd563d0 *R/get_lidar.R
 355bf68b5baa32360c1cb0c15d9de360 *R/lidar_search.R
 325d625363aee1cf6865c50554dc75bb *R/utils.R
 9fa90878089aa21f11accca4796a54a1 *build/vignette.rds
@@ -13,6 +13,6 @@ d34f37a27ffb673986b5b518a19e06ec *inst/doc/dsmSearch.html
 786cdb94535ee3a4699dc40e28921998 *man/get_lidar.Rd
 200499f933e9ca1ccd4a064beb3df98c *man/lidar_search.Rd
 c56cef6c7d79cebbecf7c5271b181c48 *tests/testthat/test-get_dsm_30.R
-425f976c60ff9b6cfd4fea53713fc030 *tests/testthat/test-get_lidar.R
+eaef35d2ad731149135b54ba3d6548fe *tests/testthat/test-get_lidar.R
 3adb853eb120ef66dd7473a814870ba4 *tests/testthat/test-lidar_search.R
 ad07ae897be8d049bc4a26fc966b8451 *vignettes/dsmSearch.Rmd
