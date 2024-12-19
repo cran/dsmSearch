@@ -1,13 +1,16 @@
 #' get_dsm_30
-#' @description Search for and download ALOS Global Digital Surface Model (AW3D30)
-#' via OpenTopography API 1.0.0 based on coordinates of a spatial point with
-#' a given distance or bounding box. The raster resolution is 30 meter.
+#' @description Search for and download ALOS Global Digital Surface Model (AW3D30) and
+#' USGS DEM raster datasets via OpenTopography API 1.0.0 based on coordinates of a spatial
+#' point with a given distance or bounding box. The AW3D30 raster resolution is 30 meter.
+#' The resolutions of USGS datasets are 10m and 1m.
 #'
 #' @param x numeric, indicating Longtitude degree of the center point.
 #' @param y numeric, indicating latitude degree of the center point.
 #' @param r numeric, indicating search distance (meter or feet) for LiDAR data.
 #' @param epsg numeric, the EPSG code specifying the coordinate reference system.
 #' @param bbox vector, a bounding box defining the geographical area for downloading data.
+#' @param global logic, if true, AW3D30 data will be downloaded.
+#' @param datatype character, dataset names including "AW3D30", "USGS1m", "USGS10m".
 #' @param key character, API key of OpenTopography.
 #'
 #' @return raster
@@ -31,6 +34,7 @@
 #' @export
 
 get_dsm_30 <- function(x, y, r, epsg, bbox,
+                       global=TRUE, datatype='AW3D30',
                        key= "") {
   if (key == "") {
     stop("key is missing.")
@@ -49,7 +53,7 @@ get_dsm_30 <- function(x, y, r, epsg, bbox,
     }
   }
   # request data
-  response <- return_response2(bbox, key)
+  response <- return_response2(bbox, key, global, datatype)
   # Store the original 'timeout' option and ensure it's reset upon function exit
   original_timeout <- getOption('timeout')
   on.exit(options(timeout = original_timeout), add = TRUE)
