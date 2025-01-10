@@ -95,7 +95,7 @@ get_lidar <- function(x,
   if (isTRUE(Sys.info()[1]=="Windows") == FALSE){
     m <- "curl"
   }else if (isTRUE(Sys.info()[1]=="Windows") == TRUE){
-    m <- "wininet"
+    m <- "auto"
   }
   for (i in 1:num) {
     if (missing(folder)) {
