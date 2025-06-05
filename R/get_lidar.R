@@ -25,7 +25,13 @@
 #' \donttest{
 #' las <- dsmSearch::get_lidar(x = -83.741289, y = 42.270146, r = 1000, epsg = 2253)
 #' las <- dsmSearch::get_lidar(bbox = c(-83.742282,42.273389,-83.733442,42.278724), epsg = 2253)
-#' terra::plot(lidR::rasterize_canopy(las, 10, lidR::dsmtin()))
+#'
+#' if (inherits(las, "LAS")) {
+#'   can <- lidR::rasterize_canopy(las, 10, lidR::dsmtin())
+#'   terra::plot(can)
+#' } else {
+#'   message("No LAS object returned. Skipping rasterization.")
+#' }
 #' }
 #'
 #' @seealso [lidar_search()]
@@ -46,7 +52,7 @@ get_lidar <- function(x,
                       r,
                       epsg,
                       bbox,
-                      max_return=500,
+                      max_return=1000,
                       folder) {
   if (missing(epsg)) {
     stop("epsg is missing. Please set epsg code")
@@ -92,22 +98,26 @@ get_lidar <- function(x,
   download <- result$downloadLazURL
   # download data
   files <- c()
-  if (isTRUE(Sys.info()[1]=="Windows") == FALSE){
-    m <- "curl"
-  }else if (isTRUE(Sys.info()[1]=="Windows") == TRUE){
-    m <- "auto"
-  }
+  destination <- ""
+  # if (isTRUE(Sys.info()[1]=="Windows") == FALSE){
+  #   m <- "curl"
+  # }else if (isTRUE(Sys.info()[1]=="Windows") == TRUE){
+  #   m <- "auto"
+  # }
   for (i in 1:num) {
     if (missing(folder)) {
       destination <- tempfile(fileext = ".laz")
     } else {
       destination <- paste0(folder, "/", title[i], ".laz")
     }
-    try(download.file(download[i],
-                      destination,
-                      method = m,
-                      quiet = TRUE))
-    files <- c(files, destination)
+    isDone <- retry_download(download[i], destination)
+    # try(download.file(download[i],
+    #                   destination,
+    #                   method = m,
+    #                   quiet = TRUE))
+    if (isDone == 1) {
+      files <- c(files, destination)
+    }
   }
   options(timeout=original_timeout)
   # clip and merge

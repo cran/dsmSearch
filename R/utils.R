@@ -101,31 +101,47 @@ find_year <- function(url) {
 # ftp://ftp.eorc.jaxa.jp//pub/ALOS/ext1/AW3D30/release_v2012_single_format/
 # Data downloaded prior to May 24th 2021 was in format: May 2016: Global terrestrial region
 # (within approx. 82 deg. of N/S latitudes) of Version 1 released (approx. 22,100 tiles)
-return_response2 <- function(bbox, key, global, datatype) {
-  if (isTRUE(global)) {
+return_response2 <- function(bbox, key, datatype) {
+  if (datatype %in% c('AW3D30','SRTMGL1')) {
     url_ <- "https://portal.opentopography.org/API/globaldem"
-    response <- httr2::request(url_) %>%
-      httr2::req_url_query(demtype = datatype,
-                           south = bbox[2],
-                           north = bbox[4],
-                           west = bbox[1],
-                           east = bbox[3],
-                           outputFormat = "GTiff",
-                           API_Key = key) %>%
-      httr2::req_headers(accept = "*/*") %>%
-      httr2::req_perform()
-  } else {
+  } else if (datatype %in% c('USGS1m','USGS10m', 'USGS30m')) {
     url_ <- "https://portal.opentopography.org/API/usgsdem"
-    response <- httr2::request(url_) %>%
-      httr2::req_url_query(datasetName = datatype,
-                           south = bbox[2],
-                           north = bbox[4],
-                           west = bbox[1],
-                           east = bbox[3],
-                           outputFormat = "GTiff",
-                           API_Key = key) %>%
-      httr2::req_headers(accept = "*/*") %>%
-      httr2::req_perform()
   }
+  response <- httr2::request(url_) %>%
+    httr2::req_url_query(demtype = datatype,
+                         south = bbox[2],
+                         north = bbox[4],
+                         west = bbox[1],
+                         east = bbox[3],
+                         outputFormat = "GTiff",
+                         API_Key = key) %>%
+    httr2::req_headers(accept = "*/*") %>%
+    httr2::req_perform()
   return(response)
 }
+
+#' @noMd
+retry_download <- function(url, destination, method = "auto", retries = 5, quiet = TRUE) {
+  attempt <- 1
+  success <- FALSE
+
+  while (attempt <= retries && !success) {
+    try({
+      download.file(url, destination, method = method, quiet = quiet)
+      success <- TRUE
+    }, silent = TRUE)
+
+    if (!success) {
+      # message(paste("Attempt", attempt, "failed for URL:", url))
+      Sys.sleep(5) # Wait before retrying, to avoid hammering the server
+    }
+    attempt <- attempt + 1
+  }
+
+  if (success) {
+    return(1)
+  } else {
+    return(0)
+  }
+}
+

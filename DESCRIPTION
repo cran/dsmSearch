@@ -1,7 +1,7 @@
 Package: dsmSearch
 Type: Package
 Title: DSM and LiDAR downloader
-Version: 1.1.1
+Version: 1.2.1
 Authors@R: c(person("Xiaohao", "Yang", role = c("aut", "cre", "cph"), email = "xiaohaoy@umich.edu"),
            person("Nathan", "Fox", role = c("aut")),
            person("Derek", "Van Berkel", role = c("aut")),
@@ -17,13 +17,14 @@ RoxygenNote: 7.3.1
 Language: en-US
 Suggests: testthat (>= 3.0.0), knitr, rmarkdown
 VignetteBuilder: knitr, rmarkdown
-Imports: dplyr, sf, sp, terra, lidR, httr2, imager
+Imports: dplyr, sf, sp, terra, lidR, httr2, forestdata, nominatimlite,
+        imager
 NeedsCompilation: no
-Packaged: 2025-01-10 16:21:16 UTC; yangxiaohao
+Packaged: 2025-06-05 21:03:57 UTC; yangxiaohao
 Author: Xiaohao Yang [aut, cre, cph],
   Nathan Fox [aut],
   Derek Van Berkel [aut],
   Mark Lindquist [aut]
 Maintainer: Xiaohao Yang <xiaohaoy@umich.edu>
 Repository: CRAN
-Date/Publication: 2025-01-10 16:40:02 UTC
+Date/Publication: 2025-06-05 21:40:02 UTC
